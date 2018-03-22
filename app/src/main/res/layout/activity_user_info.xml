@@ -67,7 +67,7 @@
             android:drawablePadding="10dp" />
     </RelativeLayout>
 
-    <Button
+    <!--<Button
         android:id="@+id/btn_add_friend"
         style="@style/style_text_white"
         android:background="@drawable/btn_login_selector"
@@ -77,7 +77,7 @@
         android:layout_marginRight="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="@string/add_friend"
-        />
+        />-->
 
     <Button
         android:id="@+id/btn_chat"

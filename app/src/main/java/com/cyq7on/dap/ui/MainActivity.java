@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity implements ObseverListener {
         BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
             @Override
             public void onChange(ConnectionStatus status) {
-                toast("" + status.getMsg());
+//                toast("" + status.getMsg());
             }
         });
         //解决leancanary提示InputMethodManager内存泄露的问题

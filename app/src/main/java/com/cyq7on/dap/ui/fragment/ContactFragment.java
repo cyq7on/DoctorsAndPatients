@@ -10,19 +10,17 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.cyq7on.dap.R;
-import com.cyq7on.dap.adapter.ContactAdapter;
 import com.cyq7on.dap.adapter.OnRecyclerViewListener;
+import com.cyq7on.dap.adapter.UserAdapter;
 import com.cyq7on.dap.adapter.base.IMutlipleItem;
 import com.cyq7on.dap.base.ParentWithNaviActivity;
 import com.cyq7on.dap.base.ParentWithNaviFragment;
-import com.cyq7on.dap.bean.Friend;
 import com.cyq7on.dap.bean.User;
 import com.cyq7on.dap.event.RefreshEvent;
 import com.cyq7on.dap.model.BaseModel;
 import com.cyq7on.dap.model.UserModel;
-import com.cyq7on.dap.ui.ChatActivity;
-import com.cyq7on.dap.ui.NewFriendActivity;
 import com.cyq7on.dap.ui.SearchUserActivity;
+import com.cyq7on.dap.ui.UserInfoActivity;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,10 +30,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.bmob.newim.BmobIM;
-import cn.bmob.newim.bean.BmobIMConversation;
-import cn.bmob.newim.bean.BmobIMUserInfo;
-import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 
 /**联系人界面
@@ -49,7 +43,7 @@ public class ContactFragment extends ParentWithNaviFragment {
     RecyclerView rc_view;
     @Bind(R.id.sw_refresh)
     SwipeRefreshLayout sw_refresh;
-    ContactAdapter adapter;
+    UserAdapter adapter;
     LinearLayoutManager layoutManager;
 
     @Override
@@ -82,55 +76,29 @@ public class ContactFragment extends ParentWithNaviFragment {
         rootView =inflater.inflate(R.layout.fragment_conversation, container, false);
         initNaviView();
         ButterKnife.bind(this, rootView);
-        IMutlipleItem<Friend> mutlipleItem = new IMutlipleItem<Friend>() {
 
-            @Override
-            public int getItemViewType(int postion, Friend friend) {
-                if(postion==0){
-                    return ContactAdapter.TYPE_NEW_FRIEND;
-                }else{
-                    return ContactAdapter.TYPE_ITEM;
-                }
-            }
-
+        IMutlipleItem<User> iMutlipleItem = new IMutlipleItem<User>() {
             @Override
             public int getItemLayoutId(int viewtype) {
-                if(viewtype== ContactAdapter.TYPE_NEW_FRIEND){
-                    return R.layout.header_new_friend;
-                }else{
-                    return R.layout.item_contact;
-                }
+                return R.layout.item_contact;
             }
 
             @Override
-            public int getItemCount(List<Friend> list) {
-                return list.size()+1;
+            public int getItemViewType(int postion, User user) {
+                return 0;
+            }
+
+            @Override
+            public int getItemCount(List<User> list) {
+                return list.size();
             }
         };
-        adapter = new ContactAdapter(getActivity(),mutlipleItem,null);
+        adapter = new UserAdapter(getActivity(),iMutlipleItem,null);
         rc_view.setAdapter(adapter);
         layoutManager = new LinearLayoutManager(getActivity());
         rc_view.setLayoutManager(layoutManager);
         sw_refresh.setEnabled(true);
         setListener();
-        User user = User.getCurrentUser(getActivity(),User.class);
-        UserModel.getInstance().queryUsers("role",user.getRole() == 0 ? 1 : 0, BaseModel.DEFAULT_LIMIT, new FindListener<User>() {
-            @Override
-            public void onSuccess(List<User> list) {
-                sw_refresh.setRefreshing(false);
-                adapter.notifyDataSetChanged();
-                for (User user : list) {
-                    Logger.d(user.getUsername());
-                }
-            }
-
-            @Override
-            public void onError(int i, String s) {
-                sw_refresh.setRefreshing(false);
-                toast(s + "(" + i + ")");
-            }
-        });
-
         return rootView;
     }
 
@@ -152,39 +120,23 @@ public class ContactFragment extends ParentWithNaviFragment {
         adapter.setOnRecyclerViewListener(new OnRecyclerViewListener() {
             @Override
             public void onItemClick(int position) {
-                if (position == 0) {//跳转到新朋友页面
-                    startActivity(NewFriendActivity.class, null);
-                } else {
-                    Friend friend = adapter.getItem(position);
-                    User user = friend.getFriendUser();
-                    BmobIMUserInfo info = new BmobIMUserInfo(user.getObjectId(), user.getUsername(), user.getAvatar());
-                    //启动一个会话，实际上就是在本地数据库的会话列表中先创建（如果没有）与该用户的会话信息，且将用户信息存储到本地的用户表中
-                    BmobIMConversation c = BmobIM.getInstance().startPrivateConversation(info, null);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("c", c);
-                    startActivity(ChatActivity.class, bundle);
-                }
+                /*User user = adapter.getItem(position);
+                BmobIMUserInfo info = new BmobIMUserInfo(user.getObjectId(), user.getUsername(), user.getAvatar());
+                //启动一个会话，实际上就是在本地数据库的会话列表中先创建（如果没有）与该用户的会话信息，且将用户信息存储到本地的用户表中
+                BmobIMConversation c = BmobIM.getInstance().startPrivateConversation(info, null);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("c", c);
+                startActivity(ChatActivity.class, bundle);*/
+
+                Bundle bundle = new Bundle();
+                User user = adapter.getItem(position);
+                bundle.putSerializable("u", user);
+                startActivity(UserInfoActivity.class, bundle);
             }
 
             @Override
             public boolean onItemLongClick(final int position) {
-                log("长按" + position);
-                if(position==0){
-                    return true;
-                }
-                UserModel.getInstance().deleteFriend(adapter.getItem(position), new DeleteListener() {
-                    @Override
-                    public void onSuccess() {
-                        toast("好友删除成功");
-                        adapter.remove(position);
-                    }
-
-                    @Override
-                    public void onFailure(int i, String s) {
-                        toast("好友删除失败：" + i + ",s =" + s);
-                    }
-                });
-                return true;
+                return false;
             }
         });
     }
@@ -222,18 +174,21 @@ public class ContactFragment extends ParentWithNaviFragment {
       查询本地会话
      */
     public void query(){
-        UserModel.getInstance().queryFriends(new FindListener<Friend>() {
+
+        User user = User.getCurrentUser(getActivity(),User.class);
+        UserModel.getInstance().queryUsers("role",user.getRole() == 0 ? 1 : 0, BaseModel.DEFAULT_LIMIT, new FindListener<User>() {
             @Override
-            public void onSuccess(List<Friend> list) {
+            public void onSuccess(List<User> list) {
                 adapter.bindDatas(list);
-                adapter.notifyDataSetChanged();
                 sw_refresh.setRefreshing(false);
+                adapter.notifyDataSetChanged();
+                for (User user : list) {
+                    Logger.d(user.getUsername());
+                }
             }
 
             @Override
             public void onError(int i, String s) {
-                adapter.bindDatas(null);
-                adapter.notifyDataSetChanged();
                 sw_refresh.setRefreshing(false);
             }
         });

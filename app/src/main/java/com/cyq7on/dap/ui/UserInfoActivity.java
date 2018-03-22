@@ -35,8 +35,8 @@ public class UserInfoActivity extends ParentWithNaviActivity {
     @Bind(com.cyq7on.dap.R.id.tv_name)
     TextView tv_name;
 
-    @Bind(com.cyq7on.dap.R.id.btn_add_friend)
-    Button btn_add_friend;
+//    @Bind(com.cyq7on.dap.R.id.btn_add_friend)
+//    Button btn_add_friend;
     @Bind(com.cyq7on.dap.R.id.btn_chat)
     Button btn_chat;
 
@@ -53,23 +53,23 @@ public class UserInfoActivity extends ParentWithNaviActivity {
         setContentView(com.cyq7on.dap.R.layout.activity_user_info);
         initNaviView();
         user=(User)getBundle().getSerializable("u");
-        if(user.getObjectId().equals(getCurrentUid())){
+       /* if(user.getObjectId().equals(getCurrentUid())){
             btn_add_friend.setVisibility(View.GONE);
             btn_chat.setVisibility(View.GONE);
         }else{
             btn_add_friend.setVisibility(View.VISIBLE);
             btn_chat.setVisibility(View.VISIBLE);
-        }
+        }*/
         //构造聊天方的用户信息:传入用户id、用户名和用户头像三个参数
         info = new BmobIMUserInfo(user.getObjectId(),user.getUsername(),user.getAvatar());
         ImageLoaderFactory.getLoader().loadAvator(iv_avator,user.getAvatar(), com.cyq7on.dap.R.mipmap.head);
         tv_name.setText(user.getUsername());
     }
 
-    @OnClick(com.cyq7on.dap.R.id.btn_add_friend)
-    public void onAddClick(View view){
-        sendAddFriendMessage();
-    }
+//    @OnClick(com.cyq7on.dap.R.id.btn_add_friend)
+//    public void onAddClick(View view){
+//        sendAddFriendMessage();
+//    }
 
     /**
      * 发送添加好友的请求
