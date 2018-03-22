@@ -7,9 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.cyq7on.dap.R;
 import com.cyq7on.dap.base.BaseActivity;
 import com.cyq7on.dap.bean.User;
 import com.cyq7on.dap.db.NewFriendManager;
+import com.cyq7on.dap.event.RefreshEvent;
+import com.cyq7on.dap.ui.fragment.ContactFragment;
+import com.cyq7on.dap.ui.fragment.ConversationFragment;
 import com.cyq7on.dap.ui.fragment.SetFragment;
 import com.cyq7on.dap.util.IMMLeaks;
 import com.orhanobut.logger.Logger;
@@ -18,11 +22,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
-import com.cyq7on.dap.R;
-import com.cyq7on.dap.event.RefreshEvent;
-import com.cyq7on.dap.ui.fragment.ContactFragment;
-import com.cyq7on.dap.ui.fragment.ConversationFragment;
-
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.core.ConnectionStatus;
 import cn.bmob.newim.event.MessageEvent;
@@ -39,7 +38,7 @@ import cn.bmob.v3.exception.BmobException;
  * @project:MainActivity
  * @date :2016-01-15-18:23
  */
-public class MainActivity extends BaseActivity implements ObseverListener{
+public class MainActivity extends BaseActivity implements ObseverListener {
 
     @Bind(R.id.btn_conversation)
     Button btn_conversation;
@@ -68,7 +67,7 @@ public class MainActivity extends BaseActivity implements ObseverListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //connect server
-        User user = BmobUser.getCurrentUser(this,User.class);
+        User user = BmobUser.getCurrentUser(this, User.class);
         BmobIM.connect(user.getObjectId(), new ConnectListener() {
             @Override
             public void done(String uid, BmobException e) {
@@ -98,16 +97,23 @@ public class MainActivity extends BaseActivity implements ObseverListener{
         mTabs = new Button[3];
         mTabs[0] = btn_conversation;
         mTabs[1] = btn_contact;
-        mTabs[2] =btn_set;
+        mTabs[2] = btn_set;
         mTabs[0].setSelected(true);
         initTab();
     }
 
-    private void initTab(){
+    private void initTab() {
+        User user = User.getCurrentUser(getApplicationContext(),User.class);
+        //角色医生，显示病人列表
+        if (user.getRole() == 1) {
+            btn_contact.setText(R.string.role_patient);
+        } else {
+            btn_contact.setText(R.string.role_doctor);
+        }
         conversationFragment = new ConversationFragment();
         setFragment = new SetFragment();
-        contactFragment=new ContactFragment();
-        fragments = new Fragment[] {conversationFragment, contactFragment,setFragment};
+        contactFragment = new ContactFragment();
+        fragments = new Fragment[]{conversationFragment, contactFragment, setFragment};
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, conversationFragment).
                 add(R.id.fragment_container, contactFragment)
@@ -131,7 +137,7 @@ public class MainActivity extends BaseActivity implements ObseverListener{
         onTabIndex(index);
     }
 
-    private void onTabIndex(int index){
+    private void onTabIndex(int index) {
         if (currentTabIndex != index) {
             FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
             trx.hide(fragments[currentTabIndex]);
@@ -161,42 +167,48 @@ public class MainActivity extends BaseActivity implements ObseverListener{
         BmobIM.getInstance().clear();
     }
 
-    /**注册消息接收事件
+    /**
+     * 注册消息接收事件
+     *
      * @param event
      */
     @Subscribe
-    public void onEventMainThread(MessageEvent event){
+    public void onEventMainThread(MessageEvent event) {
         checkRedPoint();
     }
 
-    /**注册离线消息接收事件
+    /**
+     * 注册离线消息接收事件
+     *
      * @param event
      */
     @Subscribe
-    public void onEventMainThread(OfflineMessageEvent event){
+    public void onEventMainThread(OfflineMessageEvent event) {
         checkRedPoint();
     }
 
-    /**注册自定义消息接收事件
+    /**
+     * 注册自定义消息接收事件
+     *
      * @param event
      */
     @Subscribe
-    public void onEventMainThread(RefreshEvent event){
+    public void onEventMainThread(RefreshEvent event) {
         log("---主页接收到自定义消息---");
         checkRedPoint();
     }
 
-    private void checkRedPoint(){
-        int count = (int)BmobIM.getInstance().getAllUnReadCount();
-        if(count>0){
+    private void checkRedPoint() {
+        int count = (int) BmobIM.getInstance().getAllUnReadCount();
+        if (count > 0) {
             iv_conversation_tips.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             iv_conversation_tips.setVisibility(View.GONE);
         }
         //是否有好友添加的请求
-        if(NewFriendManager.getInstance(this).hasNewFriendInvitation()){
+        if (NewFriendManager.getInstance(this).hasNewFriendInvitation()) {
             iv_contact_tips.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             iv_contact_tips.setVisibility(View.GONE);
         }
     }

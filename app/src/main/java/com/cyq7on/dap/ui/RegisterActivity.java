@@ -79,7 +79,8 @@ public class RegisterActivity extends ParentWithNaviActivity {
         rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                sex = (byte) (i - 2);
+                //这一组i从3开始
+                sex = (byte) (i - 3);
                 Logger.d("rgSex: " + i);
             }
         });

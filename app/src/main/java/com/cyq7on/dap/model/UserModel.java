@@ -148,6 +148,7 @@ public class UserModel extends BaseModel {
         user.setPassword(password);
         user.setAge(age);
         user.setSex(sex);
+        user.setRole(1);
         user.setDepartment(dep);
         user.signUp(getContext(), new SaveListener() {
             @Override
@@ -194,6 +195,7 @@ public class UserModel extends BaseModel {
         user.setAge(age);
         user.setSex(sex);
         user.setRecord(record);
+        user.setRole(0);
         user.signUp(getContext(), new SaveListener() {
             @Override
             public void onSuccess() {
@@ -240,6 +242,37 @@ public class UserModel extends BaseModel {
             }
         });
     }
+
+    public void queryUsers(String key,Object val,int limit,final FindListener<User> listener){
+        BmobQuery<User> query = new BmobQuery<>();
+        //去掉当前用户
+        try {
+            BmobUser user = BmobUser.getCurrentUser(getContext());
+            query.addWhereNotEqualTo("username",user.getUsername());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        query.addWhereEqualTo(key,val);
+        query.setLimit(limit);
+        query.order("-createdAt");
+        query.findObjects(getContext(), new FindListener<User>() {
+            @Override
+            public void onSuccess(List<User> list) {
+                if (list != null && list.size() > 0) {
+                    listener.onSuccess(list);
+                } else {
+                    listener.onError(CODE_NULL, "查无此人");
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                listener.onError(i, s);
+            }
+        });
+    }
+
+
 
     /**查询用户信息
      * @param objectId

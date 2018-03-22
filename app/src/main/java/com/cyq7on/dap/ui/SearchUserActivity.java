@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.cyq7on.dap.R;
 import com.cyq7on.dap.adapter.OnRecyclerViewListener;
 import com.cyq7on.dap.adapter.SearchUserAdapter;
 import com.cyq7on.dap.base.ParentWithNaviActivity;
@@ -20,8 +21,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import com.cyq7on.dap.R;
-
 import cn.bmob.v3.listener.FindListener;
 
 /**搜索好友
@@ -44,7 +43,7 @@ public class SearchUserActivity extends ParentWithNaviActivity {
 
     @Override
     protected String title() {
-        return "搜索好友";
+        return "搜索";
     }
 
     @Override

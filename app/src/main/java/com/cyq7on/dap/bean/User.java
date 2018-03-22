@@ -13,6 +13,7 @@ public class User extends BmobUser {
     private String avatar;
     private String age;
     private int sex;
+    private int role;
     //科室
     private String department;
     //病历
@@ -62,5 +63,13 @@ public class User extends BmobUser {
 
     public void setRecord(String record) {
         this.record = record;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
 }

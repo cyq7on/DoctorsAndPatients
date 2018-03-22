@@ -9,10 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.cyq7on.dap.R;
+import com.cyq7on.dap.adapter.ContactAdapter;
 import com.cyq7on.dap.adapter.OnRecyclerViewListener;
+import com.cyq7on.dap.adapter.base.IMutlipleItem;
 import com.cyq7on.dap.base.ParentWithNaviActivity;
+import com.cyq7on.dap.base.ParentWithNaviFragment;
+import com.cyq7on.dap.bean.Friend;
 import com.cyq7on.dap.bean.User;
+import com.cyq7on.dap.event.RefreshEvent;
+import com.cyq7on.dap.model.BaseModel;
+import com.cyq7on.dap.model.UserModel;
+import com.cyq7on.dap.ui.ChatActivity;
 import com.cyq7on.dap.ui.NewFriendActivity;
+import com.cyq7on.dap.ui.SearchUserActivity;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -21,15 +32,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import com.cyq7on.dap.R;
-import com.cyq7on.dap.adapter.ContactAdapter;
-import com.cyq7on.dap.adapter.base.IMutlipleItem;
-import com.cyq7on.dap.base.ParentWithNaviFragment;
-import com.cyq7on.dap.bean.Friend;
-import com.cyq7on.dap.event.RefreshEvent;
-import com.cyq7on.dap.model.UserModel;
-import com.cyq7on.dap.ui.ChatActivity;
-import com.cyq7on.dap.ui.SearchUserActivity;
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMUserInfo;
@@ -111,6 +113,24 @@ public class ContactFragment extends ParentWithNaviFragment {
         rc_view.setLayoutManager(layoutManager);
         sw_refresh.setEnabled(true);
         setListener();
+        User user = User.getCurrentUser(getActivity(),User.class);
+        UserModel.getInstance().queryUsers("role",user.getRole() == 0 ? 1 : 0, BaseModel.DEFAULT_LIMIT, new FindListener<User>() {
+            @Override
+            public void onSuccess(List<User> list) {
+                sw_refresh.setRefreshing(false);
+                adapter.notifyDataSetChanged();
+                for (User user : list) {
+                    Logger.d(user.getUsername());
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                sw_refresh.setRefreshing(false);
+                toast(s + "(" + i + ")");
+            }
+        });
+
         return rootView;
     }
 

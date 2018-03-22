@@ -61,7 +61,6 @@
                 android:paddingBottom="2dip"
                 android:paddingTop="7dip"
                 android:scaleType="matrix"
-                android:text="@string/main_tab_contact"
                 android:textColor="@drawable/tab_textcolor"
                 android:textSize="12sp" />
 
