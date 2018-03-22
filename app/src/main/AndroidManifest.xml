@@ -74,7 +74,7 @@
         <!-- 设置bmob appkey -->
         <meta-data
             android:name="Bmob_APP_KEY"
-            android:value="87ab0f9bee41bce86dfadd69af692873" />
+            android:value="0e09934bc721629b5a8f0e871e18ba42" />
         <!-- bmobim end -->
 
     </application>

@@ -2,14 +2,14 @@ package com.cyq7on.dap.model;
 
 import android.text.TextUtils;
 
+import com.cyq7on.dap.bean.Friend;
 import com.cyq7on.dap.bean.User;
 import com.cyq7on.dap.model.i.QueryUserListener;
+import com.cyq7on.dap.model.i.UpdateCacheListener;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
-import com.cyq7on.dap.bean.Friend;
-import com.cyq7on.dap.model.i.UpdateCacheListener;
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMMessage;
@@ -104,6 +104,96 @@ public class UserModel extends BaseModel {
         final User user = new User();
         user.setUsername(username);
         user.setPassword(password);
+        user.signUp(getContext(), new SaveListener() {
+            @Override
+            public void onSuccess() {
+                listener.done(null, null);
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                listener.done(null, new BmobException(i, s));
+            }
+        });
+    }
+
+    public void registerDoctor(String username, String password, String pwdagain, String age, int sex,
+                               String dep, final LogInListener listener) {
+        if(TextUtils.isEmpty(username)){
+            listener.internalDone(new BmobException(CODE_NULL, "请填写用户名"));
+            return;
+        }
+        if(TextUtils.isEmpty(password)){
+            listener.internalDone(new BmobException(CODE_NULL, "请填写密码"));
+            return;
+        }
+        if(TextUtils.isEmpty(pwdagain)){
+            listener.internalDone(new BmobException(CODE_NULL, "请填写确认密码"));
+            return;
+        }
+        if(!password.equals(pwdagain)){
+            listener.internalDone(new BmobException(CODE_NOT_EQUAL, "两次输入的密码不一致，请重新输入"));
+            return;
+        }
+        if(TextUtils.isEmpty(age)){
+            listener.internalDone(new BmobException(CODE_NULL, "请填写年龄"));
+            return;
+        }
+        if(TextUtils.isEmpty(dep)){
+            listener.internalDone(new BmobException(CODE_NULL, "请填写科室"));
+            return;
+        }
+        final User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setAge(age);
+        user.setSex(sex);
+        user.setDepartment(dep);
+        user.signUp(getContext(), new SaveListener() {
+            @Override
+            public void onSuccess() {
+                listener.done(null, null);
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                listener.done(null, new BmobException(i, s));
+            }
+        });
+    }
+
+    public void registerPatient(String username,String password, String pwdagain, String age, int sex,
+                               String record,final LogInListener listener) {
+        if(TextUtils.isEmpty(username)){
+            listener.internalDone(new BmobException(CODE_NULL, "请填写用户名"));
+            return;
+        }
+        if(TextUtils.isEmpty(password)){
+            listener.internalDone(new BmobException(CODE_NULL, "请填写密码"));
+            return;
+        }
+        if(TextUtils.isEmpty(pwdagain)){
+            listener.internalDone(new BmobException(CODE_NULL, "请填写确认密码"));
+            return;
+        }
+        if(!password.equals(pwdagain)){
+            listener.internalDone(new BmobException(CODE_NOT_EQUAL, "两次输入的密码不一致，请重新输入"));
+            return;
+        }
+        if(TextUtils.isEmpty(age)){
+            listener.internalDone(new BmobException(CODE_NULL, "请填写年龄"));
+            return;
+        }
+        if(TextUtils.isEmpty(record)){
+            listener.internalDone(new BmobException(CODE_NULL, "请填写病历"));
+            return;
+        }
+        final User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setAge(age);
+        user.setSex(sex);
+        user.setRecord(record);
         user.signUp(getContext(), new SaveListener() {
             @Override
             public void onSuccess() {

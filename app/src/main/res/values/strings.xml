@@ -4,6 +4,11 @@
     <string name="login_username_hint">请输入用户名&#8230;</string>
     <string name="login_password_hint">请输入密码&#8230;</string>
     <string name="login_email_hint">请再次输入密码&#8230;</string>
+    <string name="login_age">请输入年龄</string>
+    <string name="login_sex_male">男</string>
+    <string name="login_sex_female">女</string>
+    <string name="login_record">请输入病历（患者填写）&#8230;</string>
+    <string name="login_department">请输入科室（医生填写）&#8230;</string>
     <string name="login">登录</string>
     <string name="register">注册</string>
     <string name="register_txt1">还没有账号？</string>
@@ -43,5 +48,8 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_user_info">UserInfoActivity</string>
+
+    <string name="role_doctor">医生</string>
+    <string name="role_patient">患者</string>
 
 </resources>
