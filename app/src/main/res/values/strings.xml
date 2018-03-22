@@ -54,4 +54,9 @@
     <string name="role_doctor">医生</string>
     <string name="role_patient">患者</string>
 
+    <string name="info_sex">性别</string>
+    <string name="info_age">年龄</string>
+    <string name="info_dep">科室</string>
+    <string name="info_record">病历</string>
+
 </resources>

@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cyq7on.dap.R;
 import com.cyq7on.dap.base.ImageLoaderFactory;
 import com.cyq7on.dap.base.ParentWithNaviActivity;
 import com.cyq7on.dap.bean.AddFriendMessage;
@@ -34,6 +35,15 @@ public class UserInfoActivity extends ParentWithNaviActivity {
     ImageView iv_avator;
     @Bind(com.cyq7on.dap.R.id.tv_name)
     TextView tv_name;
+
+    @Bind(R.id.tv_sex)
+    TextView tv_sex;
+    @Bind(R.id.tv_age)
+    TextView tv_age;
+    @Bind(R.id.tv_other)
+    TextView tv_other;
+    @Bind(R.id.tv_other_title)
+    TextView tv_other_title;
 
 //    @Bind(com.cyq7on.dap.R.id.btn_add_friend)
 //    Button btn_add_friend;
@@ -64,6 +74,15 @@ public class UserInfoActivity extends ParentWithNaviActivity {
         info = new BmobIMUserInfo(user.getObjectId(),user.getUsername(),user.getAvatar());
         ImageLoaderFactory.getLoader().loadAvator(iv_avator,user.getAvatar(), com.cyq7on.dap.R.mipmap.head);
         tv_name.setText(user.getUsername());
+        tv_sex.setText(user.getSex() == 0 ? "男" : "女");
+        tv_age.setText(user.getAge());
+        if(user.getRole() == 0){
+            tv_other.setText(user.getRecord());
+            tv_other_title.setText(R.string.info_record);
+        }else {
+            tv_other.setText(user.getDepartment());
+            tv_other_title.setText(R.string.info_dep);
+        }
     }
 
 //    @OnClick(com.cyq7on.dap.R.id.btn_add_friend)
