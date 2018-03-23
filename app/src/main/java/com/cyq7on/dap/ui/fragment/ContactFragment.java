@@ -21,7 +21,6 @@ import com.cyq7on.dap.model.BaseModel;
 import com.cyq7on.dap.model.UserModel;
 import com.cyq7on.dap.ui.SearchUserActivity;
 import com.cyq7on.dap.ui.UserInfoActivity;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -182,9 +181,6 @@ public class ContactFragment extends ParentWithNaviFragment {
                 adapter.bindDatas(list);
                 sw_refresh.setRefreshing(false);
                 adapter.notifyDataSetChanged();
-                for (User user : list) {
-                    Logger.d(user.getUsername());
-                }
             }
 
             @Override

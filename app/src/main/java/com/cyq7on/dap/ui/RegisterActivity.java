@@ -11,6 +11,7 @@ import com.cyq7on.dap.base.ParentWithNaviActivity;
 import com.cyq7on.dap.event.FinishEvent;
 import com.cyq7on.dap.model.BaseModel;
 import com.cyq7on.dap.model.UserModel;
+import com.cyq7on.dap.util.SPUtil;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -92,8 +93,23 @@ public class RegisterActivity extends ParentWithNaviActivity {
             @Override
             public void done(Object o, BmobException e) {
                 if (e == null) {
-                    EventBus.getDefault().post(new FinishEvent());
-                    startActivity(MainActivity.class, null, true);
+                    toast("注册成功");
+                    String user = et_username.getText().toString();
+                    String pwd = et_password.getText().toString();
+                    SPUtil.putAndApply(getApplicationContext(),"pwd", pwd);
+                    UserModel.getInstance().login(user, pwd, new LogInListener() {
+                        @Override
+                        public void done(Object o, BmobException e) {
+                            if(e == null){
+                                EventBus.getDefault().post(new FinishEvent());
+                                startActivity(MainActivity.class, null, true);
+                            }else {
+                                toast("登录失败");
+                                finish();
+                            }
+                        }
+                    });
+
                 } else {
                     if (e.getErrorCode() == BaseModel.CODE_NOT_EQUAL) {
                         et_password_again.setText("");

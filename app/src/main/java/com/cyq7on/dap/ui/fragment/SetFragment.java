@@ -1,6 +1,7 @@
 package com.cyq7on.dap.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,16 +9,17 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cyq7on.dap.R;
+import com.cyq7on.dap.base.ParentWithNaviFragment;
 import com.cyq7on.dap.bean.User;
+import com.cyq7on.dap.model.UserModel;
 import com.cyq7on.dap.ui.LoginActivity;
+import com.cyq7on.dap.ui.UserInfoActivity;
+import com.cyq7on.dap.util.SPUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.cyq7on.dap.R;
-import com.cyq7on.dap.base.ParentWithNaviFragment;
-import com.cyq7on.dap.model.UserModel;
-import com.cyq7on.dap.ui.UserInfoActivity;
 import cn.bmob.newim.BmobIM;
 import cn.bmob.v3.BmobUser;
 
@@ -67,10 +69,12 @@ public class SetFragment extends ParentWithNaviFragment {
 
     @OnClick(R.id.btn_logout)
     public void onLogoutClick(View view){
+        FragmentActivity activity = getActivity();
         UserModel.getInstance().logout();
+        SPUtil.remove(activity,"pwd");
         //可断开连接
         BmobIM.getInstance().disConnect();
-        getActivity().finish();
+        activity.finish();
         startActivity(LoginActivity.class,null);
     }
 }

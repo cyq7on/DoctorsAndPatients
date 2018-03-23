@@ -40,6 +40,7 @@
                 android:layout_marginTop="@dimen/margin_12"
                 android:layout_marginBottom="@dimen/margin_12"
                 android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="20dp"
                 android:src="@mipmap/head" />
         </LinearLayout>
 
@@ -58,13 +59,13 @@
             android:layout_centerVertical="true"
             android:text="@string/add_name" />
 
-        <EditText
+        <TextView
             android:id="@+id/tv_name"
-            android:background="@null"
             style="@style/style_text_black"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:paddingRight="10dp"
             android:drawablePadding="10dp" />
     </RelativeLayout>
 
@@ -80,13 +81,13 @@
             android:layout_centerVertical="true"
             android:text="@string/info_sex" />
 
-        <EditText
+        <TextView
             android:id="@+id/tv_sex"
-            android:background="@null"
             style="@style/style_text_black"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:paddingRight="10dp"
             android:drawablePadding="10dp" />
     </RelativeLayout>
     <RelativeLayout
@@ -108,6 +109,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:paddingRight="10dp"
             android:drawablePadding="10dp" />
     </RelativeLayout>
     <RelativeLayout
@@ -123,12 +125,17 @@
             android:layout_centerVertical="true" />
 
         <EditText
+            android:layout_marginLeft="30dp"
             android:id="@+id/tv_other"
+            android:gravity="end"
             android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             style="@style/style_text_black"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:paddingRight="10dp"
             android:drawablePadding="10dp" />
     </RelativeLayout>
 

@@ -72,4 +72,16 @@ public class User extends BmobUser {
     public void setRole(int role) {
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "avatar='" + avatar + '\'' +
+                ", age='" + age + '\'' +
+                ", sex=" + sex +
+                ", role=" + role +
+                ", department='" + department + '\'' +
+                ", record='" + record + '\'' +
+                '}';
+    }
 }

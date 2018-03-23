@@ -6,15 +6,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.Subscribe;
-
-import butterknife.Bind;
-import butterknife.OnClick;
 import com.cyq7on.dap.R;
 import com.cyq7on.dap.base.BaseActivity;
 import com.cyq7on.dap.bean.User;
 import com.cyq7on.dap.event.FinishEvent;
 import com.cyq7on.dap.model.UserModel;
+import com.cyq7on.dap.util.SPUtil;
+
+import org.greenrobot.eventbus.Subscribe;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMUserInfo;
 import cn.bmob.v3.exception.BmobException;
@@ -44,11 +46,13 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.btn_login)
     public void onLoginClick(View view){
-        UserModel.getInstance().login(et_username.getText().toString(), et_password.getText().toString(), new LogInListener() {
+        final String pwd = et_password.getText().toString();
+        UserModel.getInstance().login(et_username.getText().toString(), pwd, new LogInListener() {
 
             @Override
             public void done(Object o, BmobException e) {
                 if (e == null) {
+                    SPUtil.putAndApply(getApplicationContext(),"pwd", pwd);
                     User user =(User)o;
                     BmobIM.getInstance().updateUserInfo(new BmobIMUserInfo(user.getObjectId(), user.getUsername(), user.getAvatar()));
                     startActivity(MainActivity.class, null, true);

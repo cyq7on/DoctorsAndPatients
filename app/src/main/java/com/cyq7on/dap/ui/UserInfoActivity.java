@@ -12,6 +12,7 @@ import com.cyq7on.dap.base.ImageLoaderFactory;
 import com.cyq7on.dap.base.ParentWithNaviActivity;
 import com.cyq7on.dap.bean.AddFriendMessage;
 import com.cyq7on.dap.bean.User;
+import com.orhanobut.logger.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,7 @@ import cn.bmob.newim.core.BmobIMClient;
 import cn.bmob.newim.listener.MessageSendListener;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * 用户资料
@@ -35,14 +37,14 @@ public class UserInfoActivity extends ParentWithNaviActivity {
     @Bind(com.cyq7on.dap.R.id.iv_avator)
     ImageView iv_avator;
     @Bind(com.cyq7on.dap.R.id.tv_name)
-    EditText tv_name;
+    TextView tv_name;
 
     @Bind(R.id.tv_sex)
     TextView tv_sex;
     @Bind(R.id.tv_age)
-    TextView tv_age;
+    EditText tv_age;
     @Bind(R.id.tv_other)
-    TextView tv_other;
+    EditText tv_other;
     @Bind(R.id.tv_other_title)
     TextView tv_other_title;
 
@@ -132,6 +134,30 @@ public class UserInfoActivity extends ParentWithNaviActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable("c", c);
         startActivity(ChatActivity.class, bundle, false);
+    }
+
+    @OnClick(R.id.btn_edit)
+    public void onEditClick(View view){
+        user.setAge(tv_age.getText().toString());
+        if(user.getRole() == 0){
+            user.setRecord(tv_other.getText().toString());
+        }else {
+            user.setDepartment(tv_other.getText().toString());
+        }
+
+        user.update(getApplicationContext(),user.getObjectId(), new UpdateListener() {
+            @Override
+            public void onSuccess() {
+                toast("修改资料成功");
+                finish();
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                toast("修改资料失败");
+                Logger.d(i + "\n" +s);
+            }
+        });
     }
 
 }
