@@ -138,6 +138,7 @@ public class UserInfoActivity extends ParentWithNaviActivity {
 
     @OnClick(R.id.btn_edit)
     public void onEditClick(View view){
+        user.setUsername(tv_name.getText().toString());
         user.setAge(tv_age.getText().toString());
         if(user.getRole() == 0){
             user.setRecord(tv_other.getText().toString());

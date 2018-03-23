@@ -55,9 +55,15 @@ public class SetFragment extends ParentWithNaviFragment {
         rootView= inflater.inflate(R.layout.fragment_set,container, false);
         initNaviView();
         ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
         String username = UserModel.getInstance().getCurrentUser().getUsername();
         tv_set_name.setText(TextUtils.isEmpty(username)?"":username);
-        return rootView;
     }
 
     @OnClick(R.id.layout_info)

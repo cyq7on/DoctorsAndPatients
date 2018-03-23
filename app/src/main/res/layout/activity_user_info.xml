@@ -59,9 +59,10 @@
             android:layout_centerVertical="true"
             android:text="@string/add_name" />
 
-        <TextView
+        <EditText
             android:id="@+id/tv_name"
             style="@style/style_text_black"
+            android:background="@null"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
