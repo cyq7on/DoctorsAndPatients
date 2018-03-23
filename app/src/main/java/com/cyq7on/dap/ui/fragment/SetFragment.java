@@ -13,6 +13,7 @@ import com.cyq7on.dap.R;
 import com.cyq7on.dap.base.ParentWithNaviFragment;
 import com.cyq7on.dap.bean.User;
 import com.cyq7on.dap.model.UserModel;
+import com.cyq7on.dap.ui.EditPwdActivity;
 import com.cyq7on.dap.ui.LoginActivity;
 import com.cyq7on.dap.ui.UserInfoActivity;
 import com.cyq7on.dap.util.SPUtil;
@@ -35,6 +36,8 @@ public class SetFragment extends ParentWithNaviFragment {
 
     @Bind(R.id.layout_info)
     RelativeLayout layout_info;
+    @Bind(R.id.rl_pwd)
+    RelativeLayout rl_pwd;
 
     @Override
     protected String title() {
@@ -71,6 +74,10 @@ public class SetFragment extends ParentWithNaviFragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("u", BmobUser.getCurrentUser(getActivity(),User.class));
         startActivity(UserInfoActivity.class,bundle);
+    }
+    @OnClick(R.id.rl_pwd)
+    public void onPwdClick(View view){
+        startActivity(EditPwdActivity.class,null);
     }
 
     @OnClick(R.id.btn_logout)
