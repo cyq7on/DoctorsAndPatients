@@ -128,7 +128,8 @@
         <EditText
             android:id="@+id/et_record"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/height_title"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/height_title"
             android:background="@color/transparent"
             android:drawableLeft="@mipmap/login_icon_write"
             android:drawablePadding="25dip"

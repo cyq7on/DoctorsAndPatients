@@ -31,6 +31,7 @@
 
     <string name="chat">聊天</string>
     <string name="add_friend">添加好友</string>
+    <string name="edit">修改资料</string>
 
     <string name="set_notify">接收新消息通知</string>
     <string name="set_myinfo">个人资料</string>

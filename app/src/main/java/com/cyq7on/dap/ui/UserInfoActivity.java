@@ -3,6 +3,7 @@ package com.cyq7on.dap.ui;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,7 +35,7 @@ public class UserInfoActivity extends ParentWithNaviActivity {
     @Bind(com.cyq7on.dap.R.id.iv_avator)
     ImageView iv_avator;
     @Bind(com.cyq7on.dap.R.id.tv_name)
-    TextView tv_name;
+    EditText tv_name;
 
     @Bind(R.id.tv_sex)
     TextView tv_sex;
@@ -50,6 +51,9 @@ public class UserInfoActivity extends ParentWithNaviActivity {
     @Bind(com.cyq7on.dap.R.id.btn_chat)
     Button btn_chat;
 
+    @Bind(R.id.btn_edit)
+    Button btn_edit;
+
     User user;
     BmobIMUserInfo info;
     @Override
@@ -63,13 +67,15 @@ public class UserInfoActivity extends ParentWithNaviActivity {
         setContentView(com.cyq7on.dap.R.layout.activity_user_info);
         initNaviView();
         user=(User)getBundle().getSerializable("u");
-       /* if(user.getObjectId().equals(getCurrentUid())){
-            btn_add_friend.setVisibility(View.GONE);
+        if(user.getObjectId().equals(getCurrentUid())){
+//            btn_add_friend.setVisibility(View.GONE);
             btn_chat.setVisibility(View.GONE);
+            btn_edit.setVisibility(View.VISIBLE);
         }else{
-            btn_add_friend.setVisibility(View.VISIBLE);
+//            btn_add_friend.setVisibility(View.VISIBLE);
             btn_chat.setVisibility(View.VISIBLE);
-        }*/
+            btn_edit.setVisibility(View.GONE);
+        }
         //构造聊天方的用户信息:传入用户id、用户名和用户头像三个参数
         info = new BmobIMUserInfo(user.getObjectId(),user.getUsername(),user.getAvatar());
         ImageLoaderFactory.getLoader().loadAvator(iv_avator,user.getAvatar(), com.cyq7on.dap.R.mipmap.head);
