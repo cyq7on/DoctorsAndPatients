@@ -1,13 +1,17 @@
 package com.cyq7on.dap.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.cyq7on.dap.R;
+import com.cyq7on.dap.adapter.DepAndDoctorAdapter;
 import com.cyq7on.dap.base.ParentWithNaviActivity;
+import com.cyq7on.dap.bean.Department;
 import com.cyq7on.dap.event.FinishEvent;
 import com.cyq7on.dap.model.BaseModel;
 import com.cyq7on.dap.model.UserModel;
@@ -87,23 +91,39 @@ public class RegisterActivity extends ParentWithNaviActivity {
         });
     }
 
+    @OnClick(R.id.et_dep)
+    public void onClick(View view) {
+        new AlertDialog.Builder(this)
+                .setTitle("请选择科室")
+                .setItems(DepAndDoctorAdapter.dep, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String dep = DepAndDoctorAdapter.dep[i];
+                        Department department = new Department();
+                        department.setDep(dep);
+                        department.setDepId(i);
+                        etDep.setText(dep);
+                    }
+                }).show();
+    }
+
     @OnClick(R.id.btn_register)
     public void onRegisterClick(View view) {
-        LogInListener logInListener =  new LogInListener() {
+        LogInListener logInListener = new LogInListener() {
             @Override
             public void done(Object o, BmobException e) {
                 if (e == null) {
                     toast("注册成功");
                     String user = et_username.getText().toString();
                     String pwd = et_password.getText().toString();
-                    SPUtil.putAndApply(getApplicationContext(),"pwd", pwd);
+                    SPUtil.putAndApply(getApplicationContext(), "pwd", pwd);
                     UserModel.getInstance().login(user, pwd, new LogInListener() {
                         @Override
                         public void done(Object o, BmobException e) {
-                            if(e == null){
+                            if (e == null) {
                                 EventBus.getDefault().post(new FinishEvent());
                                 startActivity(MainActivity.class, null, true);
-                            }else {
+                            } else {
                                 toast("登录失败");
                                 finish();
                             }
@@ -122,14 +142,14 @@ public class RegisterActivity extends ParentWithNaviActivity {
             case 2:
                 UserModel.getInstance().registerDoctor(et_username.getText().toString(),
                         et_password.getText().toString(), et_password_again.getText().toString(),
-                        etAge.getText().toString(),sex,etDep.getText().toString()
-                        ,logInListener);
+                        etAge.getText().toString(), sex, etDep.getText().toString()
+                        , logInListener);
                 break;
             default:
                 UserModel.getInstance().registerPatient(et_username.getText().toString(),
                         et_password.getText().toString(), et_password_again.getText().toString(),
-                        etAge.getText().toString(),sex,etRecord.getText().toString()
-                        ,logInListener);
+                        etAge.getText().toString(), sex, etRecord.getText().toString()
+                        , logInListener);
                 break;
         }
 

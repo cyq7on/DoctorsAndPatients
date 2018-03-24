@@ -19,6 +19,7 @@ import java.util.ArrayList;
  */
 
 public class DepAndDoctorAdapter extends BaseExpandableListAdapter {
+
     public static final String[] dep = new String[] {
             "内科","外科","儿科","妇科","眼科","耳鼻喉科","口腔科","皮肤科","中医科","其他"
     } ;
