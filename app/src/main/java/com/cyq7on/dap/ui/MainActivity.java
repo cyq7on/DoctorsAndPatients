@@ -9,11 +9,13 @@ import android.widget.ImageView;
 
 import com.cyq7on.dap.R;
 import com.cyq7on.dap.base.BaseActivity;
+import com.cyq7on.dap.base.ParentWithNaviFragment;
 import com.cyq7on.dap.bean.User;
 import com.cyq7on.dap.db.NewFriendManager;
 import com.cyq7on.dap.event.RefreshEvent;
 import com.cyq7on.dap.ui.fragment.ContactFragment;
 import com.cyq7on.dap.ui.fragment.ConversationFragment;
+import com.cyq7on.dap.ui.fragment.DepAndDoctorFragment;
 import com.cyq7on.dap.ui.fragment.SetFragment;
 import com.cyq7on.dap.util.IMMLeaks;
 import com.orhanobut.logger.Logger;
@@ -57,7 +59,7 @@ public class MainActivity extends BaseActivity implements ObseverListener {
     private Button[] mTabs;
     private ConversationFragment conversationFragment;
     private SetFragment setFragment;
-    ContactFragment contactFragment;
+    private ParentWithNaviFragment contactFragment;
     private Fragment[] fragments;
     private int index;
     private int currentTabIndex;
@@ -107,12 +109,13 @@ public class MainActivity extends BaseActivity implements ObseverListener {
         //角色医生，显示病人列表
         if (user.getRole() == 1) {
             btn_contact.setText(R.string.role_patient);
+            contactFragment = new ContactFragment();
         } else {
             btn_contact.setText(R.string.role_doctor);
+            contactFragment = new DepAndDoctorFragment();
         }
         conversationFragment = new ConversationFragment();
         setFragment = new SetFragment();
-        contactFragment = new ContactFragment();
         fragments = new Fragment[]{conversationFragment, contactFragment, setFragment};
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, conversationFragment).
