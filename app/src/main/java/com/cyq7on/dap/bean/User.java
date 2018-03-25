@@ -14,6 +14,7 @@ public class User extends BmobUser {
     private String age;
     private int sex;
     private int role;
+    private int depId;
     //科室
     private String department;
     //病历
@@ -73,6 +74,14 @@ public class User extends BmobUser {
         this.role = role;
     }
 
+    public int getDepId() {
+        return depId;
+    }
+
+    public void setDepId(int depId) {
+        this.depId = depId;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -80,6 +89,7 @@ public class User extends BmobUser {
                 ", age='" + age + '\'' +
                 ", sex=" + sex +
                 ", role=" + role +
+                ", depId=" + depId +
                 ", department='" + department + '\'' +
                 ", record='" + record + '\'' +
                 '}';

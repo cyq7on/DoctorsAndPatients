@@ -118,7 +118,7 @@ public class UserModel extends BaseModel {
     }
 
     public void registerDoctor(String username, String password, String pwdagain, String age, int sex,
-                               String dep, final LogInListener listener) {
+                               String dep, int depId,final LogInListener listener) {
         if(TextUtils.isEmpty(username)){
             listener.internalDone(new BmobException(CODE_NULL, "请填写用户名"));
             return;
@@ -150,6 +150,7 @@ public class UserModel extends BaseModel {
         user.setSex(sex);
         user.setRole(1);
         user.setDepartment(dep);
+        user.setDepId(depId);
         user.signUp(getContext(), new SaveListener() {
             @Override
             public void onSuccess() {

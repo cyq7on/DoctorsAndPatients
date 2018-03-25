@@ -1,8 +1,8 @@
 package com.cyq7on.dap.ui;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +55,7 @@ public class RegisterActivity extends ParentWithNaviActivity {
     @Bind(R.id.rgSex)
     RadioGroup rgSex;
     private byte role = 1;
+    private byte depId;
     private byte sex = 1;
 
 
@@ -103,6 +104,18 @@ public class RegisterActivity extends ParentWithNaviActivity {
                         department.setDep(dep);
                         department.setDepId(i);
                         etDep.setText(dep);
+                        depId = (byte) i;
+                        /*department.save(getApplicationContext(), new SaveListener() {
+                            @Override
+                            public void onSuccess() {
+                                Logger.d("dep success");
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+                                Logger.d(i + s);
+                            }
+                        });*/
                     }
                 }).show();
     }
@@ -143,7 +156,7 @@ public class RegisterActivity extends ParentWithNaviActivity {
                 UserModel.getInstance().registerDoctor(et_username.getText().toString(),
                         et_password.getText().toString(), et_password_again.getText().toString(),
                         etAge.getText().toString(), sex, etDep.getText().toString()
-                        , logInListener);
+                        , depId,logInListener);
                 break;
             default:
                 UserModel.getInstance().registerPatient(et_username.getText().toString(),
